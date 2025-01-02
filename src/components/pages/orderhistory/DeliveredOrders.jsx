@@ -5,7 +5,7 @@ import {
   useGlobalFilter,
   useRowSelect,
 } from "react-table";
-import { Checkbox } from "../discounts/Checkbox";
+import { Checkbox } from "../../utils/Checkbox";
 import { useSelector, useDispatch } from "react-redux";
 import { FaPlus, FaCircleInfo } from "react-icons/fa6";
 import PDLoadingComponent from "../../Loaders/PDLoadingComponent";
@@ -37,21 +37,6 @@ function DeliveredOrders() {
   };
 
 
-<<<<<<< HEAD
-  useEffect(() => {
-    if (orders && orders.sales) {
-      setSales(orders.sales);
-
-      // Filter sales where deliveryStatusCode === 4
-      const filteredSales = orders.sales.filter(
-        (sale) => sale.deliveryStatusCode === 4
-      );
-
-      // Update deliveredOrders with filtered sales
-      setDeliveredOrders(filteredSales);
-    }
-  }, [orders]);
-=======
    useEffect(() => {
       if (orders && Array.isArray(orders)) {
         // Combine all orderItems from each order into a single array
@@ -68,7 +53,6 @@ function DeliveredOrders() {
         setDeliveredOrders(relevantItems);
       }
     }, [orders]);
->>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
 
   const columns = useMemo(
     () => [

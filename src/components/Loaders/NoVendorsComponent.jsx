@@ -3,7 +3,7 @@ import { FaUsersSlash } from "react-icons/fa";
 import "./Noproduct-OrdersAnimation.css";  
 import { useSelector } from "react-redux";
 
-const NoCustomersComponent = () => {
+const NoVendorsComponent = () => {
     const themeMode = useSelector((state) => state.theme.mode);
    
     
@@ -34,5 +34,5 @@ const NoCustomersComponent = () => {
   );
 };
 
-export default NoCustomersComponent
+export default NoVendorsComponent
 ;

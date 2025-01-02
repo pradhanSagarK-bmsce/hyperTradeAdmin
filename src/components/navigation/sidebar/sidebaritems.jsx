@@ -1,5 +1,5 @@
-import { FaHouse  , FaChartPie , FaBox , FaTags , FaUsers ,  FaRegClock , FaGlobe} from "react-icons/fa6";
-
+import { FaHouse , FaUsers , FaRegClock } from "react-icons/fa6";
+import React from "react";
 export const sidebaritems = [
     {
         title : 'Home',
@@ -8,27 +8,6 @@ export const sidebaritems = [
         element : '<Home/>',
         cname : 'nav-item'
     },
-    // {
-    //     title : 'Dashboard',
-    //     path : '/hyperTradeAdmin/dashboard',
-    //     icon : <FaChartPie />,
-    //     element : '<Dashboard />',
-    //     cname : 'nav-item'
-    // },
-    // {
-    //     title : 'Inventory',
-    //     path : '/hyperTradeAdmin/inventory',
-    //     icon : <FaBox />,
-    //     element : '<Inventory />',
-    //     cname : 'nav-item'
-    // },
-    // {
-    //     title : 'Discounts',
-    //     path : '/hyperTradeAdmin/discounts',
-    //     icon : <FaTags />,
-    //     element : '<Discounts />',
-    //     cname : 'nav-item'
-    // },
     {
         title : 'OrderHistory',
         path : '/hyperTradeAdmin/orderhistory',
@@ -43,11 +22,5 @@ export const sidebaritems = [
         element : '<Vendors />',
         cname : 'nav-item'
     },
-    // {
-    //     title : 'MarketPlace',
-    //     path : '/hyperTradeAdmin/marketplace',
-    //     icon : <FaGlobe />,
-    //     element : '<MarketPlace />',
-    //     cname : 'nav-item'
-    // },
+
 ]

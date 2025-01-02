@@ -13,24 +13,55 @@ import {
 
 const Chart2 = () => {
     const themeMode = useSelector((state) => state.theme.mode);
+    const orders = useSelector((state) => state.ordersData.orders);
 
-    // Sample data for the chart
-    const data = [
-        { month: 'Jan', revenue: 100000, profit: 35000 },
-        { month: 'Feb', revenue: 120000, profit: 45000 },
-        { month: 'Mar', revenue: 130000, profit: 75000 },
-        { month: 'Apr', revenue: 120000, profit: 20000 },
-        { month: 'May', revenue: 100000, profit: 30000 },
-        { month: 'Jun', revenue: 200000, profit: 40000 },
-        { month: 'Jul', revenue: 100000, profit: 10000 },
-        { month: 'Aug', revenue: 140000, profit: 40000 },
-        { month: 'Sep', revenue: 150000, profit: 40000 },
-        { month: 'Oct', revenue: 175000, profit: 35000 },
-        { month: 'Nov', revenue: 200000, profit: 23500 },
-        { month: 'Dec', revenue: 100000, profit: 50000 },
+    // Function to format the month (e.g., 11 => "Nov")
+    const formatMonth = (monthNumber) => {
+        const months = [
+            'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        ];
+        return months[monthNumber - 1];
+    };
+
+    // Summing revenue and profit by month
+    const summary = orders.reduce((acc, order) => {
+        const [day, month, year] = order.orderDateTime.split(" ")[0].split("/");
+        const orderDate = new Date(`${year}-${month}-${day}`);
+        if (isNaN(orderDate)) {
+            console.error("Invalid date:", order.orderDateTime);
+            return acc; // Skip invalid dates
+        }
+        const monthName = formatMonth(orderDate.getMonth() + 1);
+        if (!acc[monthName]) {
+            acc[monthName] = { month: monthName, revenue: 0, profit: 0 };
+        }
+
+        acc[monthName].revenue += order.orderRevenue || 0;
+        acc[monthName].profit += order.orderProfit || 0;
+
+        return acc;
+    }, {});
+
+    // Full list of months for default year
+    const allMonths = [
+        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
     ];
 
-   
+    // Prepare the final array of data
+    const yearSummary = allMonths.map(month => ({
+        month,
+        revenue: summary[month]?.revenue || 0,
+        profit: summary[month]?.profit || 0,
+    }));
+
+    // console.log("yearSummary:", yearSummary);
+
+    // Chart data mapping
+    const data = yearSummary;
+
+    // Color themes for light and dark modes
     const areaColors = {
         light: {
             revenue: '#6ab04c',
@@ -42,14 +73,13 @@ const Chart2 = () => {
         },
     };
 
-
     const currentColors = themeMode === 'theme-mode-dark' ? areaColors.dark : areaColors.light;
 
     return (
         <div className="h-full w-full">
             <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                    {/* <CartesianGrid strokeDasharray="3 3" stroke={themeMode === 'theme-mode-dark' ? '#333' : '#ccc'} /> */}
+                    <CartesianGrid strokeDasharray="3 3" stroke={themeMode === 'theme-mode-dark' ? '#333' : '#ccc'} />
                     <XAxis dataKey="month" stroke={themeMode === 'theme-mode-dark' ? '#fff' : '#7a7a7a'} />
                     <YAxis stroke={themeMode === 'theme-mode-dark' ? '#fff' : '#7a7a7a'} />
                     <Tooltip
@@ -75,7 +105,7 @@ const Chart2 = () => {
                         stackId="0"
                         stroke={currentColors.profit}
                         fill={currentColors.profit}
-                        fillOpacity={0.5}
+                        fillOpacity={0.3}
                         isAnimationActive={true}
                     />
                 </AreaChart>

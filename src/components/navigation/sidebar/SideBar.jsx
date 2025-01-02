@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 import { Link, useNavigate  , useLocation } from "react-router-dom";
 import { FaBars,FaArrowRightFromBracket } from "react-icons/fa6";
-// import companyLogo from "../../../assets/company-icon.png";
 import { sidebaritems } from "./sidebaritems";
 import { useDispatch } from "react-redux";
 import { openLogOutModal } from "../../../redux/features/LogoutModalSlice";

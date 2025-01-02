@@ -11,36 +11,7 @@ const OrderDetailsModal = ({
   const [selectedSale, setSelectedSale] = useState(null);
   const themeMode = useSelector((state) => state.theme.mode);
 
-<<<<<<< HEAD
-  useEffect(() => {
-    if (selectedSaleIds) {
-      // Filter currentOrders using selectedSaleIds
-      const filteredOrders = currentOrders.find(
-        (order) =>
-          order.id === selectedSaleIds.id &&
-          order.orderId === selectedSaleIds.orderId &&
-          order.LineId === selectedSaleIds.LineId
-      );
-
-      // Set the selectedSale with individual order details
-      setSelectedSale(filteredOrders);
-    }
-  }, [currentOrders, selectedSaleIds]);
-=======
-  // useEffect(() => {
-  //   if (selectedSaleIds) {
-  //     // Filter currentOrders using selectedSaleIds
-  //     const filteredOrders = currentOrders.find(
-  //       (order) =>
-  //         order.id === selectedSaleIds.id &&
-  //         order.orderId === selectedSaleIds.orderId &&
-  //         order.LineId === selectedSaleIds.LineId
-  //     );
-
-  //     // Set the selectedSale with individual order details
-  //     setSelectedSale(filteredOrders);
-  //   }
-  // }, [currentOrders, selectedSaleIds]);
+ 
  console.log("items  : ",currentOrders)
   useEffect(() => {
     if (selectedSaleIds) {
@@ -56,7 +27,6 @@ const OrderDetailsModal = ({
     }
   }, [currentOrders, selectedSaleIds]);
   
->>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
 
   if (!isOpen) return null;
 
@@ -209,13 +179,13 @@ const OrderDetailsModal = ({
                       <div>
                         <p>Revenue</p>
                         <p className="text-[#357afa] font-semibold">
-                          ${selectedSale?.saleRevenue || "599.98"}
+                          ${selectedSale?.itemRevenue || "599.98"}
                         </p>
                       </div>
                       <div>
                         <p>Profit</p>
                         <p className="text-green-400 font-semibold">
-                          ${selectedSale?.saleProfit || "179.99"}
+                          ${selectedSale?.itemProfit || "179.99"}
                         </p>
                       </div>
                     </div>
@@ -267,7 +237,3 @@ const OrderDetailsModal = ({
 };
 
 export default OrderDetailsModal;
-<<<<<<< HEAD
-=======
-
->>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620

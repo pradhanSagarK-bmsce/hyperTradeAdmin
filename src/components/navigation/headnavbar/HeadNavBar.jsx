@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import { FaMagnifyingGlass } from "react-icons/fa6";
 import ThemeMenu from "../../Themes/ThemeMenu/ThemeMenu";
 import {  useNavigate } from "react-router-dom";
-// import { useSelector } from "react-redux";
-// import { current } from "@reduxjs/toolkit";
+
 
 const HeadNavBar = () => {
-  // const vendorInfo = useSelector((state) => state.vendorInfo.vendorInfo);
+
   const [adminName, setAdminName] = useState(
     localStorage.getItem("adminName")
   );
@@ -23,12 +21,7 @@ const HeadNavBar = () => {
     navigate("/hyperTradeAdmin/profilepage");
   };
 
-  // const [adminName,setadminName] = useState(localStorage.getItem("adminName"))
-  // const  [adminImg,setVendorImg] = useState(localStorage.getItem('vendorImg'))
-  // const currentUser = {
-  //   displayName : adminName || 'Vendor Mars',
-  //   image: adminImg,
-  // }
+  
 
   return (
     <div className="topNav p-[30px] pl-[24px] flex items-center justify-between h-[65px] shadow-box-shadow z-10">

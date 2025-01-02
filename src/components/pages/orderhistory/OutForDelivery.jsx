@@ -5,7 +5,7 @@ import {
   useGlobalFilter,
   useRowSelect,
 } from "react-table";
-import { Checkbox } from "../discounts/Checkbox";
+import { Checkbox } from "../../utils/Checkbox";
 import { useSelector, useDispatch } from "react-redux";
 import { FaCheck } from "react-icons/fa6";
 import PDLoadingComponent from "../../Loaders/PDLoadingComponent";
@@ -22,18 +22,6 @@ function OutForDelivery() {
   const [outForDelivery, setOutForDelivery] = useState([]);
 
   useEffect(() => {
-<<<<<<< HEAD
-    if (orders && orders.sales) {
-      setSales(orders.sales);
-
-      // Filter sales where deliveryStatusCode === 3
-      const filteredSales = orders?.sales?.filter(
-        (sale) => sale.deliveryStatusCode === 3 && sale.deliveryBy === 'self'
-      ) || [];
-
-      // Update outForDelivery with filtered sales
-      setOutForDelivery(filteredSales);
-=======
     if (orders && Array.isArray(orders)) {
       // Combine all orderItems from each order into a single array
       const allOrderItems = orders.flatMap((order) => order.orderItems || []);
@@ -48,7 +36,6 @@ function OutForDelivery() {
   
       // Update the state
       setOutForDelivery(relevantItems);
->>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
     }
   }, [orders]);
 
@@ -109,10 +96,7 @@ function OutForDelivery() {
     const ordersToBeMarkedAsDelivered = selectedFlatRows.map((row) => ({
       orderId: row.original.orderId,
       LineId: row.original.LineId,
-<<<<<<< HEAD
-=======
       vendorId : row.original.vendorId,
->>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
     }));
   
     console.log("Selected Orders:", ordersToBeMarkedAsDelivered);

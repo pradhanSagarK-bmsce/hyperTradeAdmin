@@ -1,17 +1,12 @@
-import React,{useState,useEffect} from "react";
-import { FaPhone, FaCertificate,  FaEarthAsia, FaLocationDot, FaPenToSquare } from 'react-icons/fa6';
+import React,{useState} from "react";
+import { FaPhone, FaCertificate,  FaEarthAsia, FaLocationDot } from 'react-icons/fa6';
 import bannerImg from "../../../assets/welcomebannerImg.png"
 import { useSelector } from "react-redux";
-// import { Outlet,useNavigate } from "react-router-dom";
-// import { fetchVendorInfo } from "../../../redux/features/VendorInfoSlice"
+
 const ProfilePage = () => {
-  //  const dispatch = useDispatch()
-  //  useEffect(() => {
-  //      dispatch(fetchVendorInfo());
-  //    }, []);
-    //  const navigate = useNavigate()
+ 
     const themeMode = useSelector((state) => state.theme.mode);
-    // const vendorInfo = useSelector((state) => state.vendorInfo.vendorInfo)
+
     const [adminName,setAdminName] = useState(localStorage.getItem("adminName"))
       const  [adminImg,setAdminImg] = useState(localStorage.getItem('adminImg'))
       const currentUser =  {
@@ -24,9 +19,7 @@ const ProfilePage = () => {
         pincode : "MRS111",
       } 
     
-      // const handleEditProfile = () => {
-      //   navigate("/hyperTradeAdmin/profilepage/editprofile")
-      // }
+   
 
   return (
     <div className={`w-full h-full rounded-lg shadow-lg ${themeMode === "theme-mode-dark" ? "gradient-bg-dark text-txt-white" : "gradient-bg-light text-txt-color"}`}>

@@ -3,24 +3,14 @@ import axios from "axios";
 import { baseURL } from "../../services/getData";
 
 const initialState = {
-<<<<<<< HEAD
-  orders: {},
-=======
   orders: [],
->>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
   status: "idle",
   error: null,
 };
 
-<<<<<<< HEAD
-export const fetchOrders = createAsyncThunk("fetchOrders", async () => {
-  try {
-    const response = await axios.get(`${baseURL}/vendor/salesData`, {
-=======
 export const fetchAllOrders = createAsyncThunk("fetchAllOrders", async () => {
   try {
     const response = await axios.get(`${baseURL}/admin/getAllOrders`, {
->>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
       headers: {
         "Content-Type": "application/json",
         token: localStorage.getItem("token"),
@@ -39,11 +29,7 @@ export const fetchAllOrders = createAsyncThunk("fetchAllOrders", async () => {
 export const updateDeliveryStatus = createAsyncThunk('updateDeliveryStatus' , async (orderToUpdate) => {
   try {
       const response = await axios.post(
-<<<<<<< HEAD
-        `${baseURL}/vendor/updateDeliveryStatus`,
-=======
         `${baseURL}/admin/updateDeliveryStatus`,
->>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
         orderToUpdate,
         {
           headers: {
@@ -69,16 +55,6 @@ const ordersDataSlice = createSlice({
   extraReducers: (builder) => {
     // Fetch orders
     builder
-<<<<<<< HEAD
-      .addCase(fetchOrders.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(fetchOrders.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.orders = action.payload; // Set the orders in the state from backend response
-      })
-      .addCase(fetchOrders.rejected, (state, action) => {
-=======
       .addCase(fetchAllOrders.pending, (state) => {
         state.status = "loading";
       })
@@ -87,7 +63,6 @@ const ordersDataSlice = createSlice({
         state.orders = action.payload; // Set the orders in the state from backend response
       })
       .addCase(fetchAllOrders.rejected, (state, action) => {
->>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
         state.status = "failed";
         state.error = action.error.message;
       });

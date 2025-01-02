@@ -6,8 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { baseURL } from "../../services/getData";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
-// import { useDispatch } from "react-redux";
-// import { fetchVendorInfo } from "../../redux/features/VendorInfoSlice"
+
 const schema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
 
@@ -27,7 +26,7 @@ const AdminLogin = () => {
     resolver: zodResolver(schema),
   });
 
-  // const dispatch = useDispatch()
+ 
   const navigate = useNavigate();
   const [showPsw, setShowPsw] = useState(false);
   const postData = async (data) => {
@@ -52,12 +51,12 @@ const AdminLogin = () => {
       console.log("Success:", result);
 
       if (result.success && result.token) {
-        // setVendorInfo(result.data);
+       
         localStorage.setItem("token", result.token);
         localStorage.setItem("adminName", result.data.name);
         localStorage.setItem("adminImg", result.data.image);
         console.log("Token saved to localStorage");
-        // dispatch(fetchVendorInfo())
+     
         console.log("Admin Logged In");
         navigate("/hyperTradeAdmin");
       }

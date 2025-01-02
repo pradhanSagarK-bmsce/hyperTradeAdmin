@@ -4,54 +4,81 @@ import {
   useSortBy,
   usePagination,
   useGlobalFilter,
-  useRowSelect,
 } from "react-table";
-import { Checkbox } from "./Checkbox";
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { LuPercent } from "react-icons/lu";
+import { useSelector } from "react-redux";
 import LoadingComponent from "../../Loaders/LoadingComponent";
-import { setSelectDiscountedProduct } from "../../../redux/features/SelectDiscountedProductSlice";
-import NoLatestProductComponent from "../../Loaders/NoLatestProductComponent";
-function DiscountProductList() {
-  const products = useSelector((state) => state.productsData.products);
-  const status = useSelector((state) => state.productsData.status);
+import NoVendorsComponent from "../../Loaders/NoVendorsComponent";
+
+function VendorList() {
   const themeMode = useSelector((state) => state.theme.mode);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const data = useMemo(
-    () => (Array.isArray(products) ? products : []),
-    [products]
-  );
+  const colorMode = useSelector((state) => state.theme.color);
+  
+  const vendors = useSelector((state)  => state.vendorsData.vendors)
+  const status = useSelector((state)  => state.vendorsData.status)
+  const [currentVendors, setCurrentVendors] = useState(vendors || []);
+
+  // console.log("vendors : ",vendors)
+  // console.log("currentVendors : ",currentVendors)
+
+  // Update currentVendors data when vendors change
+  useEffect(() => {
+    if (vendors.length > 0) {
+      setCurrentVendors(vendors);
+    } else {
+      setCurrentVendors([]);
+    }
+  }, [vendors]);
+
   const columns = useMemo(
     () => [
       {
-        Header: "Product ID",
-        accessor: "_id",
+        Header: "Vendor Image",
+        accessor: "vendorImage[0]",
+        Cell: ({ value }) => (
+          <div className="w-10 h-10 rounded-full border-2 ">
+            <img
+            src={value}
+            alt="vendor image"
+            className="w-full h-full rounded-full "
+          />
+          </div>  
+        ),
       },
       {
-        Header: "Product Name",
-        accessor: "name",
+        Header: "Vendor ID",
+        accessor: "vendorId",
       },
       {
-        Header: "Cost Price",
-        accessor: "costPrice",
+        Header: "Vendor Name",
+        accessor: "vendorName",
       },
       {
-        Header: "Selling Price",
-        accessor: "price",
-        Cell: ({ row }) => {
-          const originalPrice = row.original.price;
-          const discount = row.original.discount?.vendor?.disc || 0; // Get discount, default to 0 if not available
-          const discountedPrice =
-            originalPrice - originalPrice * (discount / 100);
-
-          return <span>{discountedPrice.toFixed(2)}</span>; // Display the discounted price rounded to 2 decimal places
-        },
+        Header: "Total products",
+        accessor: "totalProducts",
       },
       {
-        Header: "Stock",
-        accessor: "total",
+        Header: "Orders",
+        accessor: "noOfOrders",
+      },
+      {
+        Header: "No. Delivered",
+        accessor: "noDeliverSuccess",
+      },
+      {
+        Header: "Revenue",
+        accessor: "totalRevenue",
+      },
+      {
+        Header: "Profits",
+        accessor: "totalProfits",
+      },
+      {
+        Header: "Avg. Rating",
+        accessor: "avgRating",
+      },
+      {
+        Header: "No. Customers",
+        accessor: "totalCustomers",
       },
     ],
     []
@@ -69,46 +96,23 @@ function DiscountProductList() {
     pageOptions,
     nextPage,
     previousPage,
-    state: { pageIndex, globalFilter, selectedRowIds },
+    state: { pageIndex, globalFilter },
     setGlobalFilter,
-    selectedFlatRows,
   } = useTable(
     {
       columns,
-      data,
-      initialState: { pageSize: 5 },
+      data: currentVendors,
+      initialState: { pageSize: 8 },
     },
     useGlobalFilter,
     useSortBy,
-    usePagination,
-    useRowSelect,
-    (hooks) => {
-      hooks.visibleColumns.push((columns) => [
-        {
-          id: "selection",
-          Header: ({ getToggleAllRowsSelectedProps }) => (
-            <Checkbox {...getToggleAllRowsSelectedProps()} />
-          ),
-          Cell: ({ row }) => <Checkbox {...row.getToggleRowSelectedProps()} />,
-        },
-        ...columns,
-      ]);
-    }
+    usePagination
   );
 
   const handleGlobalSearch = (e) => {
     setGlobalFilter(e.target.value || undefined);
   };
 
-  const handleApplyDiscount = () => {
-    const discountedData = selectedFlatRows.map((row) => row.original._id);
-
-    dispatch(setSelectDiscountedProduct(discountedData));
-    console.log("Selected discounted products:", discountedData);
-
-    navigate("/hyperTrade/discounts/applydiscount");
-    // onOpen();
-  };
   return (
     <div
       className={`w-full h-full rounded-lg p-6 flex flex-col shadow-lg ${
@@ -117,35 +121,19 @@ function DiscountProductList() {
           : "gradient-bg-light text-gray-800"
       }`}
     >
-      {/* Header */}
-      <h1 className="text-3xl font-bold mb-6 tracking-wide">Product List</h1>
-      {products.length === 0 && status === "succeeded" ? (
+      <h1 className="text-3xl font-bold mb-6 tracking-wide">Vendor List</h1>
+      {currentVendors.length === 0 ? (
         <div className="w-full h-full flex justify-center items-center">
-          <NoLatestProductComponent />
+            <NoVendorsComponent />
         </div>
       ) : (
         <>
-          {/* Apply Discount and Search Container */}
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6">
-            {/* Apply Discount Button */}
-            <button
-              className={`flex items-center gap-2 rounded-lg font-semibold shadow-md px-4 py-2 transition-all mb-4 sm:mb-0 ${
-                themeMode === "theme-mode-dark"
-                  ? "bg-[#26DC5C] text-black hover:bg-[#26DC5C]"
-                  : "bg-[#26DC5C] text-white hover:bg-[#26DC5C]"
-              }`}
-              onClick={handleApplyDiscount}
-            >
-              <LuPercent className="w-5 h-5" />
-              <span>Apply Discount</span>
-            </button>
-
-            {/* Search Input */}
             <input
               type="text"
               value={globalFilter || ""}
               onChange={handleGlobalSearch}
-              placeholder="Search products..."
+              placeholder="Search Vendors..."
               className={`lg:w-[60%] sm:max-w-md px-4 py-2 rounded-md shadow focus:ring-2 focus:outline-none ${
                 themeMode === "theme-mode-dark"
                   ? "bg-gray-800 text-gray-300 focus:ring-[#26DC5C]"
@@ -154,9 +142,8 @@ function DiscountProductList() {
             />
           </div>
 
-          {/* Table Container */}
           <div className="flex-grow flex flex-col">
-            {status !== "succeeded" || !products ? (
+            {(status !== "succeeded" && currentVendors.length !== 0) ? (
               <div className="flex-grow flex justify-center items-center">
                 <LoadingComponent />
               </div>
@@ -168,7 +155,6 @@ function DiscountProductList() {
                     : "bg-transparent"
                 }`}
               >
-                {/* Table */}
                 <div className="overflow-x-auto flex-grow max-h-[50vh] sm:max-h-full">
                   <table {...getTableProps()} className="w-full text-left">
                     <thead>
@@ -246,7 +232,6 @@ function DiscountProductList() {
             )}
           </div>
 
-          {/* Pagination */}
           <div
             className={`mt-4 flex justify-between items-center rounded-lg py-2 px-4 shadow-md ${
               themeMode === "theme-mode-dark" ? "bg-gray-800" : "bg-gray-100"
@@ -290,4 +275,4 @@ function DiscountProductList() {
   );
 }
 
-export default DiscountProductList;
+export default VendorList;

@@ -18,10 +18,20 @@ const LatestOrdersHome = () => {
   const [sales, setSales] = useState([]);
 
   useEffect(() => {
-    if (orders && orders.sales) {
-      setSales(orders.sales);
-    }
-  }, [orders]);
+     if (orders && Array.isArray(orders)) {
+       // Combine all orderItems from each order into a single array
+       const allOrderItems = orders.flatMap((order) => order.orderItems || []);
+ 
+       // Filter items that match the conditions
+       const relevantItems = allOrderItems.filter(
+         (item) =>
+           item.deliveryBy === "company"
+       );
+ 
+       // Update the state
+       setSales(relevantItems);
+     }
+   }, [orders]);
 
   const extractDate = (orderDateTime) => {
     const [date, time] = orderDateTime.split(" "); // Split the date and time
@@ -33,7 +43,7 @@ const LatestOrdersHome = () => {
       { Header: "Order ID", accessor: "orderId" },
       { Header: "Customer", accessor: "custName" },
       {
-        Header: "Date",
+        Header: "Ordered At",
         accessor: "orderDateTime", // Use the original field name
         Cell: ({ value }) => extractDate(value), // Apply extractDate function to the cell value
         Filter: DateFilter, // If you have a custom date filter, keep it here
@@ -42,6 +52,8 @@ const LatestOrdersHome = () => {
     ],
     []
   );
+
+  // console.log("current sale : ",sales)
 
   const {
     getTableProps,

@@ -1,81 +1,28 @@
 import React, { useState, useEffect, useMemo } from "react";
-<<<<<<< HEAD
-=======
 import OrderDetailsModal from "./OrderDetailsModal";
->>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
 import {
   useTable,
   useSortBy,
   useGlobalFilter,
   useRowSelect,
 } from "react-table";
-import { Checkbox } from "../discounts/Checkbox";
+import { Checkbox } from "../../utils/Checkbox";
 import { useSelector, useDispatch } from "react-redux";
-<<<<<<< HEAD
-import { FaTruck } from "react-icons/fa6";
-import PDLoadingComponent from "../../Loaders/PDLoadingComponent";
-import { updateDeliveryStatus } from "../../../redux/features/OrdersDataSlice";
-
-function DispatchedOrders() {
-    const dispatch = useDispatch()
-=======
 import { FaTruck,FaCircleInfo  } from "react-icons/fa6";
 import PDLoadingComponent from "../../Loaders/PDLoadingComponent";
 import { updateDeliveryStatus } from "../../../redux/features/OrdersDataSlice";
-// import { ConstructionOutlined } from "@mui/icons-material";
+
 
 function DispatchedOrders() {
   const dispatch = useDispatch();
->>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
   const themeMode = useSelector((state) => state.theme.mode);
   const colorMode = useSelector((state) => state.theme.color);
   const orders = useSelector((state) => state.ordersData.orders);
   const status = useSelector((state) => state.ordersData.status);
-<<<<<<< HEAD
-
-  const [sales, setSales] = useState([]);
-  const [dispatchedOrders, setDispatchedOrders] = useState([]);
-
- // Example driver names
-const driverNames = ["Alice", "Bob", "Charlie", "Diana", "Eve", "Frank", "Grace"];
-
-// Helper function to assign a random driver name
-const assignRandomDriver = () => {
-  return driverNames[Math.floor(Math.random() * driverNames.length)];
-};
-
-useEffect(() => {
-    if (orders && orders.sales) {
-      setSales(orders.sales);
-
-      // Filter sales where deliveryStatusCode === 2
-      const filteredSales = orders?.sales?.filter(
-        (sale) => sale.deliveryStatusCode === 2 && sale.deliveryBy === 'self'
-      ) || [];
-
-      // Add a random delivery person to each order
-      const updatedDispatchedOrders = filteredSales.map((sale) => ({
-        ...sale,
-        deliveryAgent: assignRandomDriver(), // Add random driver
-      }));
-
-      setDispatchedOrders(updatedDispatchedOrders);
-    }
-  }, [orders]);
-
-=======
 const [isOpen, setIsOpen] = useState(false);
  const [selectedSaleIds, setSelectedSaleIds] = useState(null);
   const [sales, setSales] = useState([]);
   const [dispatchedOrders, setDispatchedOrders] = useState([]);
-
-  //  // Example driver names
-  // const driverNames = ["Alice", "Bob", "Charlie", "Diana", "Eve", "Frank", "Grace"];
-
-  // // Helper function to assign a random driver name
-  // const assignRandomDriver = () => {
-  //   return driverNames[Math.floor(Math.random() * driverNames.length)];
-  // };
 
   const onClose = () => {
     setIsOpen(false);
@@ -109,31 +56,16 @@ const [isOpen, setIsOpen] = useState(false);
       setDispatchedOrders(relevantItems);
     }
   }, [orders]);
-  console.log("dispatch : ", dispatchedOrders);
->>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
+  // console.log("dispatch : ", dispatchedOrders);
   const columns = useMemo(
     () => [
       { Header: "Order ID", accessor: "orderId" },
       { Header: "Line ID", accessor: "LineId" },
-<<<<<<< HEAD
-      {
-        Header: "Delivery Agent",
-        accessor: "deliveryAgent",
-      },
-=======
-      // {
-      //   Header: "Delivery Agent",
-      //   accessor: "deliveryAgent",
-      // },
->>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
       {
         Header: "Status",
         accessor: "deliveryStatus",
         Cell: ({ value }) => (
           <div className="p-2 max-w-[180px] flex justify-center items-center bg-[#d11aff62] rounded-3xl">
-<<<<<<< HEAD
-            <p className={`${themeMode === 'theme-mode-dark' ? "text-purple-600" : "text-black"} font-semibold`}>{value}</p>
-=======
             <p
               className={`${
                 themeMode === "theme-mode-dark"
@@ -143,7 +75,6 @@ const [isOpen, setIsOpen] = useState(false);
             >
               {value}
             </p>
->>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
           </div>
         ),
       },
@@ -191,27 +122,16 @@ const [isOpen, setIsOpen] = useState(false);
     const ordersToOutForDelivery = selectedFlatRows.map((row) => ({
       orderId: row.original.orderId,
       LineId: row.original.LineId,
-<<<<<<< HEAD
-    }));
-  
-    console.log("Selected Orders:", ordersToOutForDelivery);
-  
-=======
       vendorId: row.original.vendorId,
     }));
 
     console.log("Selected Orders:", ordersToOutForDelivery);
 
->>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
     // Dispatch updates for each order individually
     ordersToOutForDelivery.forEach((orderToOutForDelivery) => {
       dispatch(updateDeliveryStatus(orderToOutForDelivery));
     });
   };
-<<<<<<< HEAD
-  
-=======
->>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
 
   return (
     <div
@@ -222,13 +142,9 @@ const [isOpen, setIsOpen] = useState(false);
       }`}
     >
       {/* Header */}
-<<<<<<< HEAD
-      <h1 className="text-3xl font-bold mb-6 tracking-wide">Dispatched Orders</h1>
-=======
       <h1 className="text-3xl font-bold mb-6 tracking-wide">
         Dispatched Orders
       </h1>
->>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
       {dispatchedOrders.length === 0 ? (
         <div className="w-full h-full flex justify-center items-center">
           <p className="font-bold text-2xl">No Dispatched orders</p>
@@ -250,8 +166,6 @@ const [isOpen, setIsOpen] = useState(false);
               }`}
             />
 
-<<<<<<< HEAD
-=======
             <button
               className={`flex items-center gap-2 rounded-lg font-semibold shadow-md px-4 py-2 transition-all mb-4 sm:mb-0 ${
                 themeMode === "theme-mode-dark"
@@ -264,7 +178,6 @@ const [isOpen, setIsOpen] = useState(false);
               <span>View Details</span>
             </button>
 
->>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
             {/* out for delivery Button */}
             <button
               className={`flex items-center gap-2 rounded-lg font-semibold shadow-md px-4 py-2 transition-all mb-4 sm:mb-0 ${
@@ -274,11 +187,7 @@ const [isOpen, setIsOpen] = useState(false);
               }`}
               onClick={handleOutForDelivery}
             >
-<<<<<<< HEAD
-              <FaTruck className="w-5 h-5"  />
-=======
               <FaTruck className="w-5 h-5" />
->>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
               <span>Out for Delivery</span>
             </button>
           </div>
@@ -376,8 +285,6 @@ const [isOpen, setIsOpen] = useState(false);
           </div>
         </>
       )}
-<<<<<<< HEAD
-=======
 
 {isOpen && (
         <div className="absolute inset-0 bg-black bg-opacity-10 backdrop-blur-sm flex items-center justify-center">
@@ -391,7 +298,6 @@ const [isOpen, setIsOpen] = useState(false);
       )}
 
 
->>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
     </div>
   );
 }

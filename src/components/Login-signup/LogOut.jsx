@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector,useDispatch } from "react-redux";
 import { closeLogOutModal } from '../../redux/features/LogoutModalSlice';
 import { reset } from '../../redux/features/appSlice';
-// import { fetchOrders } from '../../redux/features/OrdersDataSlice';
-// import { fetchProducts } from '../../redux/features/ProductsDataSlice';
+
 
 const LogOut = () => {
 
