@@ -2,68 +2,76 @@ import React, { useState, useEffect, useMemo } from "react";
 import {
   useTable,
   useSortBy,
+  usePagination,
   useGlobalFilter,
-  useRowSelect,
 } from "react-table";
-import { Checkbox } from "../discounts/Checkbox";
-import { useSelector, useDispatch } from "react-redux";
-import { FaCheck } from "react-icons/fa6";
-import PDLoadingComponent from "../../Loaders/PDLoadingComponent";
-import { updateDeliveryStatus } from "../../../redux/features/OrdersDataSlice";
+import { useSelector } from "react-redux";
+import LoadingComponent from "../../Loaders/LoadingComponent";
+import NoCustomersComponent from "../../Loaders/NoCustomersComponent";
 
-function OutForDelivery() {
-  const dispatch = useDispatch()
+function CustomerList() {
   const themeMode = useSelector((state) => state.theme.mode);
   const colorMode = useSelector((state) => state.theme.color);
   const orders = useSelector((state) => state.ordersData.orders);
   const status = useSelector((state) => state.ordersData.status);
 
   const [sales, setSales] = useState([]);
-  const [outForDelivery, setOutForDelivery] = useState([]);
+  const [customers, setCustomers] = useState([]);
 
+  // Function to extract unique customers
+  const extractUniqueCustomers = (sales) => {
+    const uniqueCustomers = new Map();
+    sales.forEach((sale) => {
+      if (!uniqueCustomers.has(sale.custId)) {
+        uniqueCustomers.set(sale.custId, {
+          custId: sale.custId,
+          custName: sale.custName,
+          custPic: sale.custPic || "/default-avatar.png",
+        });
+      }
+    });
+    return [...uniqueCustomers.values()];
+  };
+
+  // Update sales data when orders change
   useEffect(() => {
-<<<<<<< HEAD
     if (orders && orders.sales) {
       setSales(orders.sales);
-
-      // Filter sales where deliveryStatusCode === 3
-      const filteredSales = orders?.sales?.filter(
-        (sale) => sale.deliveryStatusCode === 3 && sale.deliveryBy === 'self'
-      ) || [];
-
-      // Update outForDelivery with filtered sales
-      setOutForDelivery(filteredSales);
-=======
-    if (orders && Array.isArray(orders)) {
-      // Combine all orderItems from each order into a single array
-      const allOrderItems = orders.flatMap((order) => order.orderItems || []);
-  
-      // Filter items that match the conditions
-      const relevantItems = allOrderItems.filter(
-        (item) =>
-          item.isDelivered === false &&
-          item.deliveryStatusCode === 3 &&
-          item.deliveryBy === "company"
-      );
-  
-      // Update the state
-      setOutForDelivery(relevantItems);
->>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
+      // console.log("Sales data updated:", orders.sales);
     }
   }, [orders]);
 
+  // Update customers data when sales change
+  useEffect(() => {
+    if (sales.length > 0) {
+      setCustomers(extractUniqueCustomers(sales));
+    } else {
+      setCustomers([]);
+    }
+  }, [sales]);
+
   const columns = useMemo(
     () => [
-      { Header: "Order ID", accessor: "orderId" },
-      { Header: "Line ID", accessor: "LineId" },
       {
-        Header: "Live Status",
-        accessor: "deliveryStatus",
+        Header: "Profile Pic",
+        accessor: "custPic",
         Cell: ({ value }) => (
-          <div className="p-2 max-w-[180px] flex justify-center items-center bg-[#1aff535e] rounded-3xl">
-            <p className={`${themeMode === 'theme-mode-dark' ? "text-[#26DC5C]" : "text-black"} font-semibold`}>{value}</p>
-          </div>
+          <div className="w-10 h-10 rounded-full border-2 border-[#26DC5C]">
+            <img
+            src={value}
+            alt="Profile Pic"
+            className="w-full h-full rounded-full "
+          />
+          </div>  
         ),
+      },
+      {
+        Header: "Customer ID",
+        accessor: "custId",
+      },
+      {
+        Header: "Customer Name",
+        accessor: "custName",
       },
     ],
     []
@@ -75,106 +83,62 @@ function OutForDelivery() {
     headerGroups,
     rows,
     prepareRow,
-    state: { globalFilter, selectedRowIds },
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    nextPage,
+    previousPage,
+    state: { pageIndex, globalFilter },
     setGlobalFilter,
-    selectedFlatRows,
   } = useTable(
     {
       columns,
-      data: outForDelivery,
+      data: customers,
+      initialState: { pageSize: 4 },
     },
     useGlobalFilter,
     useSortBy,
-    useRowSelect,
-    (hooks) => {
-      hooks.visibleColumns.push((columns) => [
-        {
-          id: "selection",
-          Header: ({ getToggleAllRowsSelectedProps }) => (
-            <Checkbox {...getToggleAllRowsSelectedProps()} />
-          ),
-          Cell: ({ row }) => <Checkbox {...row.getToggleRowSelectedProps()} />,
-        },
-        ...columns,
-      ]);
-    }
+    usePagination
   );
 
   const handleGlobalSearch = (e) => {
     setGlobalFilter(e.target.value || undefined);
   };
 
-  const handleMarkAsDeliveried = () => {
-    // Extract selected orders with their IDs
-    const ordersToBeMarkedAsDelivered = selectedFlatRows.map((row) => ({
-      orderId: row.original.orderId,
-      LineId: row.original.LineId,
-<<<<<<< HEAD
-=======
-      vendorId : row.original.vendorId,
->>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
-    }));
-  
-    console.log("Selected Orders:", ordersToBeMarkedAsDelivered);
-  
-    // Dispatch updates for each order individually
-    ordersToBeMarkedAsDelivered.forEach((orderToBeMarkedAsDelivered) => {
-      dispatch(updateDeliveryStatus(orderToBeMarkedAsDelivered));
-    });
-  };
-  
-  
-
   return (
     <div
       className={`w-full h-full rounded-lg p-6 flex flex-col shadow-lg ${
         themeMode === "theme-mode-dark"
-          ? "bg-black text-white"
+          ? "bg-black text-txt-white"
           : "gradient-bg-light text-gray-800"
       }`}
     >
-      {/* Header */}
-      <h1 className="text-3xl font-bold mb-6 tracking-wide">Out for Delivery</h1>
-      {outForDelivery.length === 0 ? (
+      <h1 className="text-3xl font-bold mb-6 tracking-wide">Customer List</h1>
+      {customers.length === 0 ? (
         <div className="w-full h-full flex justify-center items-center">
-          <p className="font-bold text-2xl">No orders out for delivery</p>
+            <NoCustomersComponent />
         </div>
       ) : (
         <>
-          {/* Accept Orders and Search Container */}
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6">
-            {/* Search Input */}
             <input
               type="text"
               value={globalFilter || ""}
               onChange={handleGlobalSearch}
-              placeholder="Search orders..."
+              placeholder="Search customers..."
               className={`lg:w-[60%] sm:max-w-md px-4 py-2 rounded-md shadow focus:ring-2 focus:outline-none ${
                 themeMode === "theme-mode-dark"
                   ? "bg-gray-800 text-gray-300 focus:ring-[#26DC5C]"
                   : "bg-gray-100 text-gray-700 focus:ring-[#26DC5C]"
               }`}
             />
-
-           
-            <button
-              className={`flex items-center gap-2 rounded-lg font-semibold shadow-md px-4 py-2 transition-all mb-4 sm:mb-0 ${
-                themeMode === "theme-mode-dark"
-                  ? "bg-[#26DC5C] text-black hover:bg-[#70f86b]"
-                  : "bg-[#26DC5C] text-white hover:bg-[#70f86b]"
-              }`}
-              onClick={handleMarkAsDeliveried}
-            >
-              <FaCheck className="w-5 h-5" />
-              <span>Mark as Delivered</span>
-            </button>
           </div>
 
-          {/* Table Container */}
           <div className="flex-grow flex flex-col">
-            {status !== "succeeded" || !outForDelivery ? (
+            {(status !== "succeeded" && customers.length !== 0) ? (
               <div className="flex-grow flex justify-center items-center">
-                <PDLoadingComponent />
+                <LoadingComponent />
               </div>
             ) : (
               <div
@@ -184,7 +148,6 @@ function OutForDelivery() {
                     : "bg-transparent"
                 }`}
               >
-                {/* Table */}
                 <div className="overflow-x-auto flex-grow max-h-[50vh] sm:max-h-full">
                   <table {...getTableProps()} className="w-full text-left">
                     <thead>
@@ -231,7 +194,7 @@ function OutForDelivery() {
                           : "bg-white"
                       }
                     >
-                      {rows.map((row) => {
+                      {page.map((row) => {
                         prepareRow(row);
                         return (
                           <tr
@@ -261,10 +224,48 @@ function OutForDelivery() {
               </div>
             )}
           </div>
+
+          <div
+            className={`mt-4 flex justify-between items-center rounded-lg py-2 px-4 shadow-md ${
+              themeMode === "theme-mode-dark" ? "bg-gray-800" : "bg-gray-100"
+            }`}
+          >
+            <button
+              onClick={() => previousPage()}
+              disabled={!canPreviousPage}
+              className={`px-3 py-1 text-sm rounded-md disabled:cursor-not-allowed transition-all ${
+                themeMode === "theme-mode-dark"
+                  ? "bg-gray-700 text-gray-300 disabled:bg-gray-600 hover:bg-gray-600"
+                  : "bg-gray-200 text-gray-600 disabled:bg-gray-300 hover:bg-gray-300"
+              }`}
+            >
+              Previous
+            </button>
+            <span
+              className={`text-sm ${
+                themeMode === "theme-mode-dark"
+                  ? "text-gray-400"
+                  : "text-gray-600"
+              }`}
+            >
+              Page <strong>{pageIndex + 1}</strong> of {pageOptions.length}
+            </span>
+            <button
+              onClick={() => nextPage()}
+              disabled={!canNextPage}
+              className={`px-3 py-1 text-sm rounded-md disabled:cursor-not-allowed transition-all ${
+                themeMode === "theme-mode-dark"
+                  ? "bg-gray-700 text-gray-300 disabled:bg-gray-600 hover:bg-gray-600"
+                  : "bg-gray-200 text-gray-600 disabled:bg-gray-300 hover:bg-gray-300"
+              }`}
+            >
+              Next
+            </button>
+          </div>
         </>
       )}
     </div>
   );
 }
 
-export default OutForDelivery;
+export default CustomerList;

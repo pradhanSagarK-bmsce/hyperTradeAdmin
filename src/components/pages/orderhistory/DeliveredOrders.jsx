@@ -37,6 +37,7 @@ function DeliveredOrders() {
   };
 
 
+<<<<<<< HEAD
   useEffect(() => {
     if (orders && orders.sales) {
       setSales(orders.sales);
@@ -50,6 +51,24 @@ function DeliveredOrders() {
       setDeliveredOrders(filteredSales);
     }
   }, [orders]);
+=======
+   useEffect(() => {
+      if (orders && Array.isArray(orders)) {
+        // Combine all orderItems from each order into a single array
+        const allOrderItems = orders.flatMap((order) => order.orderItems || []);
+    
+        // Filter items that match the conditions
+        const relevantItems = allOrderItems.filter(
+          (item) =>
+            item.isDelivered === true &&
+            item.deliveryStatusCode === 4 
+        );
+    
+        // Update the state
+        setDeliveredOrders(relevantItems);
+      }
+    }, [orders]);
+>>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
 
   const columns = useMemo(
     () => [

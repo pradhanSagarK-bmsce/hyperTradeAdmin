@@ -1,4 +1,8 @@
 import React, { useState, useEffect, useMemo } from "react";
+<<<<<<< HEAD
+=======
+import OrderDetailsModal from "./OrderDetailsModal";
+>>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
 import {
   useTable,
   useSortBy,
@@ -7,16 +11,27 @@ import {
 } from "react-table";
 import { Checkbox } from "../discounts/Checkbox";
 import { useSelector, useDispatch } from "react-redux";
+<<<<<<< HEAD
 import { FaTruck } from "react-icons/fa6";
 import PDLoadingComponent from "../../Loaders/PDLoadingComponent";
 import { updateDeliveryStatus } from "../../../redux/features/OrdersDataSlice";
 
 function DispatchedOrders() {
     const dispatch = useDispatch()
+=======
+import { FaTruck,FaCircleInfo  } from "react-icons/fa6";
+import PDLoadingComponent from "../../Loaders/PDLoadingComponent";
+import { updateDeliveryStatus } from "../../../redux/features/OrdersDataSlice";
+// import { ConstructionOutlined } from "@mui/icons-material";
+
+function DispatchedOrders() {
+  const dispatch = useDispatch();
+>>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
   const themeMode = useSelector((state) => state.theme.mode);
   const colorMode = useSelector((state) => state.theme.color);
   const orders = useSelector((state) => state.ordersData.orders);
   const status = useSelector((state) => state.ordersData.status);
+<<<<<<< HEAD
 
   const [sales, setSales] = useState([]);
   const [dispatchedOrders, setDispatchedOrders] = useState([]);
@@ -48,20 +63,87 @@ useEffect(() => {
     }
   }, [orders]);
 
+=======
+const [isOpen, setIsOpen] = useState(false);
+ const [selectedSaleIds, setSelectedSaleIds] = useState(null);
+  const [sales, setSales] = useState([]);
+  const [dispatchedOrders, setDispatchedOrders] = useState([]);
+
+  //  // Example driver names
+  // const driverNames = ["Alice", "Bob", "Charlie", "Diana", "Eve", "Frank", "Grace"];
+
+  // // Helper function to assign a random driver name
+  // const assignRandomDriver = () => {
+  //   return driverNames[Math.floor(Math.random() * driverNames.length)];
+  // };
+
+  const onClose = () => {
+    setIsOpen(false);
+  };
+
+  const onOpen = () => {
+    const orderSelected = selectedFlatRows.map((row) => ({
+      orderId: row.original.orderId,
+      LineId: row.original.LineId,
+    }));
+    setSelectedSaleIds(orderSelected[0])
+    setIsOpen(true);
+  };
+
+
+
+  useEffect(() => {
+    if (orders && Array.isArray(orders)) {
+      // Combine all orderItems from each order into a single array
+      const allOrderItems = orders.flatMap((order) => order.orderItems || []);
+
+      // Filter items that match the conditions
+      const relevantItems = allOrderItems.filter(
+        (item) =>
+          item.isDelivered === false &&
+          item.deliveryStatusCode === 2 &&
+          item.deliveryBy === "company"
+      );
+
+      // Update the state
+      setDispatchedOrders(relevantItems);
+    }
+  }, [orders]);
+  console.log("dispatch : ", dispatchedOrders);
+>>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
   const columns = useMemo(
     () => [
       { Header: "Order ID", accessor: "orderId" },
       { Header: "Line ID", accessor: "LineId" },
+<<<<<<< HEAD
       {
         Header: "Delivery Agent",
         accessor: "deliveryAgent",
       },
+=======
+      // {
+      //   Header: "Delivery Agent",
+      //   accessor: "deliveryAgent",
+      // },
+>>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
       {
         Header: "Status",
         accessor: "deliveryStatus",
         Cell: ({ value }) => (
           <div className="p-2 max-w-[180px] flex justify-center items-center bg-[#d11aff62] rounded-3xl">
+<<<<<<< HEAD
             <p className={`${themeMode === 'theme-mode-dark' ? "text-purple-600" : "text-black"} font-semibold`}>{value}</p>
+=======
+            <p
+              className={`${
+                themeMode === "theme-mode-dark"
+                  ? "text-purple-600"
+                  : "text-black"
+              } font-semibold`}
+            >
+              {value}
+            </p>
+>>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
           </div>
         ),
       },
@@ -109,16 +191,27 @@ useEffect(() => {
     const ordersToOutForDelivery = selectedFlatRows.map((row) => ({
       orderId: row.original.orderId,
       LineId: row.original.LineId,
+<<<<<<< HEAD
     }));
   
     console.log("Selected Orders:", ordersToOutForDelivery);
   
+=======
+      vendorId: row.original.vendorId,
+    }));
+
+    console.log("Selected Orders:", ordersToOutForDelivery);
+
+>>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
     // Dispatch updates for each order individually
     ordersToOutForDelivery.forEach((orderToOutForDelivery) => {
       dispatch(updateDeliveryStatus(orderToOutForDelivery));
     });
   };
+<<<<<<< HEAD
   
+=======
+>>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
 
   return (
     <div
@@ -129,7 +222,13 @@ useEffect(() => {
       }`}
     >
       {/* Header */}
+<<<<<<< HEAD
       <h1 className="text-3xl font-bold mb-6 tracking-wide">Dispatched Orders</h1>
+=======
+      <h1 className="text-3xl font-bold mb-6 tracking-wide">
+        Dispatched Orders
+      </h1>
+>>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
       {dispatchedOrders.length === 0 ? (
         <div className="w-full h-full flex justify-center items-center">
           <p className="font-bold text-2xl">No Dispatched orders</p>
@@ -151,6 +250,21 @@ useEffect(() => {
               }`}
             />
 
+<<<<<<< HEAD
+=======
+            <button
+              className={`flex items-center gap-2 rounded-lg font-semibold shadow-md px-4 py-2 transition-all mb-4 sm:mb-0 ${
+                themeMode === "theme-mode-dark"
+                  ? "bg-[#2c99ff] text-black hover:bg-[#5baffd]"
+                  : "bg-[#2c99ff] text-white hover:bg-[#5baffd]"
+              }`}
+              onClick={onOpen}
+            >
+              <FaCircleInfo className="w-5 h-5" />
+              <span>View Details</span>
+            </button>
+
+>>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
             {/* out for delivery Button */}
             <button
               className={`flex items-center gap-2 rounded-lg font-semibold shadow-md px-4 py-2 transition-all mb-4 sm:mb-0 ${
@@ -160,7 +274,11 @@ useEffect(() => {
               }`}
               onClick={handleOutForDelivery}
             >
+<<<<<<< HEAD
               <FaTruck className="w-5 h-5"  />
+=======
+              <FaTruck className="w-5 h-5" />
+>>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
               <span>Out for Delivery</span>
             </button>
           </div>
@@ -258,6 +376,22 @@ useEffect(() => {
           </div>
         </>
       )}
+<<<<<<< HEAD
+=======
+
+{isOpen && (
+        <div className="absolute inset-0 bg-black bg-opacity-10 backdrop-blur-sm flex items-center justify-center">
+          <OrderDetailsModal
+            isOpen={isOpen}
+            onClose={onClose}
+            currentOrders={dispatchedOrders}
+            selectedSaleIds={selectedSaleIds}
+          />
+        </div>
+      )}
+
+
+>>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
     </div>
   );
 }

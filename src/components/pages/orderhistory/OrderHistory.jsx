@@ -5,7 +5,12 @@ import CurrentOrders from './CurrentOrders'
 import AcceptedOrders from './AcceptedOrders'
 import DispatchedOrders from './DispatchedOrders'
 import OutForDelivery from './OutForDelivery'
+<<<<<<< HEAD
 import { fetchOrders } from '../../../redux/features/OrdersDataSlice'
+=======
+// import { fetchAllOrders } from '../../../redux/features/OrdersDataSlice'
+import { fetchAllOrders } from '../../../redux/features/OrdersDataSlice';
+>>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
 import DeliveredOrders from './DeliveredOrders'
 
 const OrderHistory = () => {
@@ -13,11 +18,19 @@ const OrderHistory = () => {
   const themeMode = useSelector((state) => state.theme.mode);
 
   useEffect(() => {
+<<<<<<< HEAD
     dispatch(fetchOrders());
   }, []);
 
   const handleRefresh = () => {
     dispatch(fetchOrders());
+=======
+    dispatch(fetchAllOrders());
+  }, []);
+
+  const handleRefresh = () => {
+    dispatch(fetchAllOrders());
+>>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
   };
  
   return (
@@ -35,8 +48,13 @@ const OrderHistory = () => {
        
           <div className="col-span-5 row-span-3 rounded-lg"><DispatchedOrders /></div>
           <div className="col-span-5 row-span-3 rounded-lg"><OutForDelivery /></div>
+<<<<<<< HEAD
           <div className="col-span-5 row-span-3 rounded-lg "><CurrentOrders /></div>
           <div className="col-span-5 row-span-3 rounded-lg"><AcceptedOrders /></div>
+=======
+          {/* <div className="col-span-5 row-span-3 rounded-lg "><CurrentOrders /></div> */}
+          {/* <div className="col-span-5 row-span-3 rounded-lg"><AcceptedOrders /></div> */}
+>>>>>>> 63551105bdff9ebabd57c5f4591c99ee7fdc6620
           <div className='col-span-10 row-span-6 rounded-lg'><DeliveredOrders /></div>
       
       </div>
