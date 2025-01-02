@@ -3,14 +3,14 @@ import axios from "axios";
 import { baseURL } from "../../services/getData";
 
 const initialState = {
-  orders: {},
+  orders: [],
   status: "idle",
   error: null,
 };
 
-export const fetchOrders = createAsyncThunk("fetchOrders", async () => {
+export const fetchAllOrders = createAsyncThunk("fetchAllOrders", async () => {
   try {
-    const response = await axios.get(`${baseURL}/vendor/salesData`, {
+    const response = await axios.get(`${baseURL}/admin/getAllOrders`, {
       headers: {
         "Content-Type": "application/json",
         token: localStorage.getItem("token"),
@@ -29,7 +29,7 @@ export const fetchOrders = createAsyncThunk("fetchOrders", async () => {
 export const updateDeliveryStatus = createAsyncThunk('updateDeliveryStatus' , async (orderToUpdate) => {
   try {
       const response = await axios.post(
-        `${baseURL}/vendor/updateDeliveryStatus`,
+        `${baseURL}/admin/updateDeliveryStatus`,
         orderToUpdate,
         {
           headers: {
@@ -55,14 +55,14 @@ const ordersDataSlice = createSlice({
   extraReducers: (builder) => {
     // Fetch orders
     builder
-      .addCase(fetchOrders.pending, (state) => {
+      .addCase(fetchAllOrders.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchOrders.fulfilled, (state, action) => {
+      .addCase(fetchAllOrders.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.orders = action.payload; // Set the orders in the state from backend response
       })
-      .addCase(fetchOrders.rejected, (state, action) => {
+      .addCase(fetchAllOrders.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       });

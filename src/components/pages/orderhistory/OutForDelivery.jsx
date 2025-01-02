@@ -22,16 +22,20 @@ function OutForDelivery() {
   const [outForDelivery, setOutForDelivery] = useState([]);
 
   useEffect(() => {
-    if (orders && orders.sales) {
-      setSales(orders.sales);
-
-      // Filter sales where deliveryStatusCode === 3
-      const filteredSales = orders?.sales?.filter(
-        (sale) => sale.deliveryStatusCode === 3 && sale.deliveryBy === 'self'
-      ) || [];
-
-      // Update outForDelivery with filtered sales
-      setOutForDelivery(filteredSales);
+    if (orders && Array.isArray(orders)) {
+      // Combine all orderItems from each order into a single array
+      const allOrderItems = orders.flatMap((order) => order.orderItems || []);
+  
+      // Filter items that match the conditions
+      const relevantItems = allOrderItems.filter(
+        (item) =>
+          item.isDelivered === false &&
+          item.deliveryStatusCode === 3 &&
+          item.deliveryBy === "company"
+      );
+  
+      // Update the state
+      setOutForDelivery(relevantItems);
     }
   }, [orders]);
 
@@ -92,6 +96,7 @@ function OutForDelivery() {
     const ordersToBeMarkedAsDelivered = selectedFlatRows.map((row) => ({
       orderId: row.original.orderId,
       LineId: row.original.LineId,
+      vendorId : row.original.vendorId,
     }));
   
     console.log("Selected Orders:", ordersToBeMarkedAsDelivered);

@@ -37,19 +37,22 @@ function DeliveredOrders() {
   };
 
 
-  useEffect(() => {
-    if (orders && orders.sales) {
-      setSales(orders.sales);
-
-      // Filter sales where deliveryStatusCode === 4
-      const filteredSales = orders.sales.filter(
-        (sale) => sale.deliveryStatusCode === 4
-      );
-
-      // Update deliveredOrders with filtered sales
-      setDeliveredOrders(filteredSales);
-    }
-  }, [orders]);
+   useEffect(() => {
+      if (orders && Array.isArray(orders)) {
+        // Combine all orderItems from each order into a single array
+        const allOrderItems = orders.flatMap((order) => order.orderItems || []);
+    
+        // Filter items that match the conditions
+        const relevantItems = allOrderItems.filter(
+          (item) =>
+            item.isDelivered === true &&
+            item.deliveryStatusCode === 4 
+        );
+    
+        // Update the state
+        setDeliveredOrders(relevantItems);
+      }
+    }, [orders]);
 
   const columns = useMemo(
     () => [

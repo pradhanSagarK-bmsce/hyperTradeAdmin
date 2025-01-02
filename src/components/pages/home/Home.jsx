@@ -17,9 +17,9 @@ import FinancialCard from "../../Card/FinancialCard";
 import TopCategoriesChart from "../../Card/TopCategoriesChart";
 import LatestOrderHome from "./LastestOrderHome";
 import AnalyticsCard from "../../Card/AnalyticsCard";
-import { fetchOrders } from "../../../redux/features/OrdersDataSlice";
+import { fetchAllOrders } from "../../../redux/features/OrdersDataSlice";
 import { fetchReviews } from "../../../redux/features/ProductReviewSlice";
-// import useFetchOrdersPeriodically from "../../../customHooks/useFetchOrdersPeriodically"
+// import useFetchAllOrdersPeriodically from "../../../customHooks/useFetchAllOrdersPeriodically"
 
 let vendorName = "company Name";
 const Home = () => {
@@ -36,13 +36,13 @@ const Home = () => {
   const handleExploreOrders = () => {
     navigate("/hyperTrade/orderhistory");
   };
-//  useFetchOrdersPeriodically(30000);
+//  useFetchAllOrdersPeriodically(30000);
   useEffect(() => {
     dispatch(fetchProducts());
   }, []);
    // Fetch orders immediately when the app loads (on first render)
    useEffect(() => {
-    dispatch(fetchOrders()); // Dispatch fetchOrders action to get data on mount
+    dispatch(fetchAllOrders()); // Dispatch fetchAllOrders action to get data on mount
   }, []);
 
   useEffect(() => {

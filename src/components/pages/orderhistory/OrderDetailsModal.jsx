@@ -11,20 +11,35 @@ const OrderDetailsModal = ({
   const [selectedSale, setSelectedSale] = useState(null);
   const themeMode = useSelector((state) => state.theme.mode);
 
+  // useEffect(() => {
+  //   if (selectedSaleIds) {
+  //     // Filter currentOrders using selectedSaleIds
+  //     const filteredOrders = currentOrders.find(
+  //       (order) =>
+  //         order.id === selectedSaleIds.id &&
+  //         order.orderId === selectedSaleIds.orderId &&
+  //         order.LineId === selectedSaleIds.LineId
+  //     );
+
+  //     // Set the selectedSale with individual order details
+  //     setSelectedSale(filteredOrders);
+  //   }
+  // }, [currentOrders, selectedSaleIds]);
+ console.log("items  : ",currentOrders)
   useEffect(() => {
     if (selectedSaleIds) {
-      // Filter currentOrders using selectedSaleIds
-      const filteredOrders = currentOrders.find(
-        (order) =>
-          order.id === selectedSaleIds.id &&
-          order.orderId === selectedSaleIds.orderId &&
-          order.LineId === selectedSaleIds.LineId
+ 
+      const matchingItem = currentOrders.find(
+        (item) =>
+          item.orderId === selectedSaleIds.orderId &&
+          item.LineId === selectedSaleIds.LineId
       );
-
-      // Set the selectedSale with individual order details
-      setSelectedSale(filteredOrders);
+  
+      // Set the selectedSale state
+      setSelectedSale(matchingItem);
     }
   }, [currentOrders, selectedSaleIds]);
+  
 
   if (!isOpen) return null;
 
@@ -235,3 +250,4 @@ const OrderDetailsModal = ({
 };
 
 export default OrderDetailsModal;
+

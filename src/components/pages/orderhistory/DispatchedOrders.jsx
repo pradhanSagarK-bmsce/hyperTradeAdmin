@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
+import OrderDetailsModal from "./OrderDetailsModal";
 import {
   useTable,
   useSortBy,
@@ -7,61 +8,85 @@ import {
 } from "react-table";
 import { Checkbox } from "../discounts/Checkbox";
 import { useSelector, useDispatch } from "react-redux";
-import { FaTruck } from "react-icons/fa6";
+import { FaTruck,FaCircleInfo  } from "react-icons/fa6";
 import PDLoadingComponent from "../../Loaders/PDLoadingComponent";
 import { updateDeliveryStatus } from "../../../redux/features/OrdersDataSlice";
+// import { ConstructionOutlined } from "@mui/icons-material";
 
 function DispatchedOrders() {
-    const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const themeMode = useSelector((state) => state.theme.mode);
   const colorMode = useSelector((state) => state.theme.color);
   const orders = useSelector((state) => state.ordersData.orders);
   const status = useSelector((state) => state.ordersData.status);
-
+const [isOpen, setIsOpen] = useState(false);
+ const [selectedSaleIds, setSelectedSaleIds] = useState(null);
   const [sales, setSales] = useState([]);
   const [dispatchedOrders, setDispatchedOrders] = useState([]);
 
- // Example driver names
-const driverNames = ["Alice", "Bob", "Charlie", "Diana", "Eve", "Frank", "Grace"];
+  //  // Example driver names
+  // const driverNames = ["Alice", "Bob", "Charlie", "Diana", "Eve", "Frank", "Grace"];
 
-// Helper function to assign a random driver name
-const assignRandomDriver = () => {
-  return driverNames[Math.floor(Math.random() * driverNames.length)];
-};
+  // // Helper function to assign a random driver name
+  // const assignRandomDriver = () => {
+  //   return driverNames[Math.floor(Math.random() * driverNames.length)];
+  // };
 
-useEffect(() => {
-    if (orders && orders.sales) {
-      setSales(orders.sales);
+  const onClose = () => {
+    setIsOpen(false);
+  };
 
-      // Filter sales where deliveryStatusCode === 2
-      const filteredSales = orders?.sales?.filter(
-        (sale) => sale.deliveryStatusCode === 2 && sale.deliveryBy === 'self'
-      ) || [];
+  const onOpen = () => {
+    const orderSelected = selectedFlatRows.map((row) => ({
+      orderId: row.original.orderId,
+      LineId: row.original.LineId,
+    }));
+    setSelectedSaleIds(orderSelected[0])
+    setIsOpen(true);
+  };
 
-      // Add a random delivery person to each order
-      const updatedDispatchedOrders = filteredSales.map((sale) => ({
-        ...sale,
-        deliveryAgent: assignRandomDriver(), // Add random driver
-      }));
 
-      setDispatchedOrders(updatedDispatchedOrders);
+
+  useEffect(() => {
+    if (orders && Array.isArray(orders)) {
+      // Combine all orderItems from each order into a single array
+      const allOrderItems = orders.flatMap((order) => order.orderItems || []);
+
+      // Filter items that match the conditions
+      const relevantItems = allOrderItems.filter(
+        (item) =>
+          item.isDelivered === false &&
+          item.deliveryStatusCode === 2 &&
+          item.deliveryBy === "company"
+      );
+
+      // Update the state
+      setDispatchedOrders(relevantItems);
     }
   }, [orders]);
-
+  console.log("dispatch : ", dispatchedOrders);
   const columns = useMemo(
     () => [
       { Header: "Order ID", accessor: "orderId" },
       { Header: "Line ID", accessor: "LineId" },
-      {
-        Header: "Delivery Agent",
-        accessor: "deliveryAgent",
-      },
+      // {
+      //   Header: "Delivery Agent",
+      //   accessor: "deliveryAgent",
+      // },
       {
         Header: "Status",
         accessor: "deliveryStatus",
         Cell: ({ value }) => (
           <div className="p-2 max-w-[180px] flex justify-center items-center bg-[#d11aff62] rounded-3xl">
-            <p className={`${themeMode === 'theme-mode-dark' ? "text-purple-600" : "text-black"} font-semibold`}>{value}</p>
+            <p
+              className={`${
+                themeMode === "theme-mode-dark"
+                  ? "text-purple-600"
+                  : "text-black"
+              } font-semibold`}
+            >
+              {value}
+            </p>
           </div>
         ),
       },
@@ -109,16 +134,16 @@ useEffect(() => {
     const ordersToOutForDelivery = selectedFlatRows.map((row) => ({
       orderId: row.original.orderId,
       LineId: row.original.LineId,
+      vendorId: row.original.vendorId,
     }));
-  
+
     console.log("Selected Orders:", ordersToOutForDelivery);
-  
+
     // Dispatch updates for each order individually
     ordersToOutForDelivery.forEach((orderToOutForDelivery) => {
       dispatch(updateDeliveryStatus(orderToOutForDelivery));
     });
   };
-  
 
   return (
     <div
@@ -129,7 +154,9 @@ useEffect(() => {
       }`}
     >
       {/* Header */}
-      <h1 className="text-3xl font-bold mb-6 tracking-wide">Dispatched Orders</h1>
+      <h1 className="text-3xl font-bold mb-6 tracking-wide">
+        Dispatched Orders
+      </h1>
       {dispatchedOrders.length === 0 ? (
         <div className="w-full h-full flex justify-center items-center">
           <p className="font-bold text-2xl">No Dispatched orders</p>
@@ -151,6 +178,18 @@ useEffect(() => {
               }`}
             />
 
+            <button
+              className={`flex items-center gap-2 rounded-lg font-semibold shadow-md px-4 py-2 transition-all mb-4 sm:mb-0 ${
+                themeMode === "theme-mode-dark"
+                  ? "bg-[#2c99ff] text-black hover:bg-[#5baffd]"
+                  : "bg-[#2c99ff] text-white hover:bg-[#5baffd]"
+              }`}
+              onClick={onOpen}
+            >
+              <FaCircleInfo className="w-5 h-5" />
+              <span>View Details</span>
+            </button>
+
             {/* out for delivery Button */}
             <button
               className={`flex items-center gap-2 rounded-lg font-semibold shadow-md px-4 py-2 transition-all mb-4 sm:mb-0 ${
@@ -160,7 +199,7 @@ useEffect(() => {
               }`}
               onClick={handleOutForDelivery}
             >
-              <FaTruck className="w-5 h-5"  />
+              <FaTruck className="w-5 h-5" />
               <span>Out for Delivery</span>
             </button>
           </div>
@@ -258,6 +297,19 @@ useEffect(() => {
           </div>
         </>
       )}
+
+{isOpen && (
+        <div className="absolute inset-0 bg-black bg-opacity-10 backdrop-blur-sm flex items-center justify-center">
+          <OrderDetailsModal
+            isOpen={isOpen}
+            onClose={onClose}
+            currentOrders={dispatchedOrders}
+            selectedSaleIds={selectedSaleIds}
+          />
+        </div>
+      )}
+
+
     </div>
   );
 }
