@@ -179,13 +179,13 @@ const OrderDetailsModal = ({
                       <div>
                         <p>Revenue</p>
                         <p className="text-[#357afa] font-semibold">
-                          ${selectedSale?.itemRevenue || "599.98"}
+                         ₹{selectedSale?.itemRevenue || "599.98"}
                         </p>
                       </div>
                       <div>
                         <p>Profit</p>
                         <p className="text-green-400 font-semibold">
-                          ${selectedSale?.itemProfit || "179.99"}
+                         ₹{selectedSale?.itemProfit || "179.99"}
                         </p>
                       </div>
                     </div>
