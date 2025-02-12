@@ -36,12 +36,12 @@ const AnalyticsCard = () => {
   }, [vendors]);
 
   return (
-    <div className="w-full h-full bg-gradient-to-br from-blue-500 via-blue-600 to-cyan-400 rounded-lg p-4 sm:p-5 md:p-6 shadow-2xl transform transition-all duration-500 grid grid-cols-2 gap-4 overflow-hidden">
+    <div className="w-full h-full bg-gradient-to-br from-blue-500 via-blue-600 to-cyan-400 rounded-lg p-4 sm:p-4 3xl:p-6 shadow-2xl transform transition-all duration-500 grid grid-cols-2 gap-4 overflow-hidden">
       {/* Total Customers Section */}
       <div className="flex flex-col items-start space-y-1 w-full">
         <div className="flex items-center space-x-2">
           <FaUsers className="text-white text-2xl" />
-          <span className="text-white text-xs sm:text-sm font-medium">Total Customers</span>
+          <span className="text-white text-xs sm:text-[0.8rem]lg:text-sm font-medium">Total Customers</span>
         </div>
         <div className="text-white text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-200">
           {totalCustomers.toLocaleString("en-IN")}
@@ -52,7 +52,7 @@ const AnalyticsCard = () => {
       <div className="flex flex-col items-start space-y-1 w-full">
         <div className="flex items-center space-x-2">
           <FaStore className="text-white text-2xl" />
-          <span className="text-white text-xs sm:text-sm font-medium">Total Vendors</span>
+          <span className="text-white text-xs sm:text-[0.8rem]lg:text-sm font-medium">Total Vendors</span>
         </div>
         <div className="text-white text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-200">
           {totalVendors.toLocaleString("en-IN")}
@@ -63,7 +63,7 @@ const AnalyticsCard = () => {
       <div className="flex flex-col items-start space-y-1 w-full">
         <div className="flex items-center space-x-2">
           <FaCartShopping className="text-white text-2xl" />
-          <span className="text-white text-xs sm:text-sm font-medium">Total Products Sold</span>
+          <span className="text-white text-xs sm:text-[0.8rem]lg:text-sm font-medium">Total Products Sold</span>
         </div>
         <div className="text-white text-xl sm:text-2xl font-bold">
           {totalProductsSold.toLocaleString("en-IN")}
@@ -74,7 +74,7 @@ const AnalyticsCard = () => {
       <div className="flex flex-col items-start space-y-1 w-full">
         <div className="flex items-center space-x-2">
           <FaWarehouse className="text-white text-2xl" />
-          <span className="text-white text-xs sm:text-sm font-medium">Total Products for Commerce</span>
+          <span className="text-white text-xs sm:text-[0.8rem]lg:text-sm font-medium">Total Products for Commerce</span>
         </div>
         <div className="text-white text-xl sm:text-2xl font-bold">
           {totalProductsForCommerce.toLocaleString("en-IN")}

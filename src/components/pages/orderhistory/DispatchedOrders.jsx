@@ -159,7 +159,7 @@ const [isOpen, setIsOpen] = useState(false);
               value={globalFilter || ""}
               onChange={handleGlobalSearch}
               placeholder="Search orders..."
-              className={`lg:w-[60%] sm:max-w-md px-4 py-2 rounded-md shadow focus:ring-2 focus:outline-none ${
+              className={`lg:w-[55%] sm:max-w-md px-4 py-2 rounded-md shadow focus:ring-2 focus:outline-none ${
                 themeMode === "theme-mode-dark"
                   ? "bg-gray-800 text-gray-300 focus:ring-[#26DC5C]"
                   : "bg-gray-100 text-gray-700 focus:ring-[#26DC5C]"
@@ -167,7 +167,7 @@ const [isOpen, setIsOpen] = useState(false);
             />
 
             <button
-              className={`flex items-center gap-2 rounded-lg font-semibold shadow-md px-4 py-2 transition-all mb-4 sm:mb-0 ${
+              className={`flex items-center gap-2 rounded-lg font-semibold shadow-md lg:text-[0.75rem] 3xl:px-4 px-2 py-2 transition-all mb-4 sm:mb-0 ${
                 themeMode === "theme-mode-dark"
                   ? "bg-[#2c99ff] text-black hover:bg-[#5baffd]"
                   : "bg-[#2c99ff] text-white hover:bg-[#5baffd]"
@@ -180,7 +180,7 @@ const [isOpen, setIsOpen] = useState(false);
 
             {/* out for delivery Button */}
             <button
-              className={`flex items-center gap-2 rounded-lg font-semibold shadow-md px-4 py-2 transition-all mb-4 sm:mb-0 ${
+              className={`flex items-center gap-2 rounded-lg font-semibold shadow-md lg:text-[0.75rem] 3xl:px-4 px-2 py-2 transition-all mb-4 sm:mb-0 ${
                 themeMode === "theme-mode-dark"
                   ? "bg-[#b22cff] text-black hover:bg-[#dc4eff]"
                   : "bg-[#b22cff] text-white hover:bg-[#dc4eff]"

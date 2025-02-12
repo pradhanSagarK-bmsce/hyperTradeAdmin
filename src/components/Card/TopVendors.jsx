@@ -89,8 +89,8 @@ const TopVendors = () => {
                   cy="80%"  // This ensures the center of the pie chart is aligned
                   startAngle={180}
                   endAngle={0}
-                  innerRadius={120}  // Reduced the inner radius to fit more in the container
-                  outerRadius={150}  // Adjusted the outer radius for smaller chart
+                  innerRadius={105}  // Reduced the inner radius to fit more in the container
+                  outerRadius={135}  // Adjusted the outer radius for smaller chart
                   paddingAngle={3} // Gap between arches
                   cornerRadius={7} // Rounded edges
                   labelLine={false} // Disable label line

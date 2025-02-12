@@ -10,7 +10,7 @@ import LatestOrderHome from "./LastestOrderHome";
 import AnalyticsCard from "../../Card/AnalyticsCard";
 import { fetchAllOrders } from "../../../redux/features/OrdersDataSlice";
 import { fetchVendorsData } from "../../../redux/features/VendorsData";
-
+import "./Home.css"
 
 let adminName = "company Name";
 const Home = () => {
@@ -49,20 +49,20 @@ const Home = () => {
             }}
           >
             <div className="w-full h-full rounded-lg banner-bg-gradient flex justify-between">
-              <div className="h-full flex flex-col gap-2 w-full sm:w-[70%] p-4">
-                <h2 className="lg:text-3xl font-semibold text-[#26DC5C]">
+              <div className="h-full flex flex-col gap-[0.175rem] 3xl:gap-2 w-full sm:w-[70%] p-3 3xl:p-4">
+                <h2 className="welcomeText font-semibold text-[#26DC5C]">
                   Welcome Back
                 </h2>
-                <span className="lg:text-2xl font-semibold text-txt-white">
+                <span className="companyNameText font-semibold text-txt-white">
                   {adminName || "company Name"}
                 </span>
-                <p className="lg:text-[0.85rem] w-full sm:w-[80%] font-semibold text-[#AFAFAF]">
+                <p className="companyDescText w-full sm:w-[80%] font-semibold text-[#AFAFAF]">
                   Welcome back,We’re excited to have you with us again.
                   The site’s performance and growth are important. Check out the latest
                   analytics and orders,optimizing experience for users!
                 </p>
                 <button
-                  className="lg:w-[140px] rounded-md bg-[#DA653A] p-1 text-black font-semibold mt-2"
+                  className="exploreBtn lg:w-[140px] rounded-md text-sm bg-[#DA653A] p-1 text-black font-semibold mt-1"
                   onClick={handleExploreOrders}
                 >
                   Explore Orders
