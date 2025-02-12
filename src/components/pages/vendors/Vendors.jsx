@@ -19,7 +19,7 @@ const Vendors = () => {
   return (
     <div className="w-full h-full flex flex-col gap-3">
       <h1 className="pageHeader pl-2">Vendors</h1>
-      <div className="w-full h-[95%] mb-2 ">
+      <div className="w-full h-[95%]  mb-2 ">
       <VendorList />
       </div>
     </div>

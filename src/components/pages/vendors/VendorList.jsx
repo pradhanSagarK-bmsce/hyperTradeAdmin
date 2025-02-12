@@ -102,7 +102,7 @@ function VendorList() {
     {
       columns,
       data: currentVendors,
-      initialState: { pageSize: 8 },
+      initialState: { pageSize: 4 },
     },
     useGlobalFilter,
     useSortBy,
